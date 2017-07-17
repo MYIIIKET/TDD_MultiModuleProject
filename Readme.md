@@ -1,3 +1,3 @@
 Made by:
--Sergei Dorofeev
--Evgenii Sidorenko
+- Sergei Dorofeev
+- Evgenii Sidorenko
