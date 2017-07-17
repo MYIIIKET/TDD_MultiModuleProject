@@ -1,5 +1,5 @@
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Iterator;
 import java.util.List;
@@ -8,25 +8,24 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.junit.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class RangeTest {
 
     private Range range;
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         range = new RangeImpl(5L, 15L);
     }
 
-    @Test
-    void testThatConstructorThrowsWhenInputBordersInWrongOrder() {
-        assertThrows(IllegalArgumentException.class, () -> new RangeImpl(15L, 5L));
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatConstructorThrowsWhenInputBordersInWrongOrder() {
+        new RangeImpl(15L, 5L);
     }
 
     @Test
-    void testThatIsBeforeWorksCorrectOnSingleElementRange() {
+    public void testThatIsBeforeWorksCorrectOnSingleElementRange() {
         RangeImpl testingRange = new RangeImpl(-5L, -5L);
         assertTrue(testingRange.isBefore(range));
         assertFalse(range.isBefore(testingRange));
@@ -40,12 +39,12 @@ public class RangeTest {
     }
 
     @Test
-    void testThatLowerBoundWorksCorrect() {
+    public void testThatLowerBoundWorksCorrect() {
         assertThat(range.getLowerBound(), is(5L));
     }
 
     @Test
-    void testThatUpperBoundWorksCorrect() {
+    public void testThatUpperBoundWorksCorrect() {
         assertThat(range.getUpperBound(), is(15L));
     }
 
@@ -57,60 +56,60 @@ public class RangeTest {
     }
 
     @Test
-    void testThatIsBeforeWorksCorrectOnSameRange() {
+    public void testThatIsBeforeWorksCorrectOnSameRange() {
         assertFalse(range.isBefore(range));
     }
 
     @Test
-    void testThatIsAfterWorksCorrectOnSameRange() {
+    public void testThatIsAfterWorksCorrectOnSameRange() {
         assertFalse(range.isAfter(range));
     }
 
     @Test
-    void testThatIsConcurrentWorksCorrectOnLowerBound() {
+    public void testThatIsConcurrentWorksCorrectOnLowerBound() {
         assertTrue(range.isConcurrent(new RangeImpl(3L, 7L)));
     }
 
     @Test
-    void testThatIsConcurrentWorksCorrectOnUpperBound() {
+    public void testThatIsConcurrentWorksCorrectOnUpperBound() {
         assertTrue(range.isConcurrent(new RangeImpl(7L, 20L)));
     }
 
     @Test
-    void testThatIsConcurrentWorksCorrectOnInnerRange() {
+    public void testThatIsConcurrentWorksCorrectOnInnerRange() {
         assertTrue(range.isConcurrent(new RangeImpl(7L, 10L)));
     }
 
     @Test
-    void testThatIsConcurrentWorksCorrectOnOuterRange() {
+    public void testThatIsConcurrentWorksCorrectOnOuterRange() {
         assertTrue(range.isConcurrent(new RangeImpl(3L, 20L)));
     }
 
     @Test
-    void testThatIsConcurrentWorksCorrectOnUnconcurrentRangeAfter() {
+    public void testThatIsConcurrentWorksCorrectOnUnconcurrentRangeAfter() {
         assertFalse(range.isConcurrent(new RangeImpl(17L, 20L)));
     }
 
     @Test
-    void testThatIsConcurrentWorksCorrectOnUnconcurrentRangeBefore() {
+    public void testThatIsConcurrentWorksCorrectOnUnconcurrentRangeBefore() {
         assertFalse(range.isConcurrent(new RangeImpl(3L, 4L)));
     }
 
     @Test
-    void testThatRangeContainsValue() {
+    public void testThatRangeContainsValue() {
         assertTrue(range.contains(7));
         assertFalse(range.contains(0));
         assertFalse(range.contains(20));
     }
 
     @Test
-    void testThatRangeContainsBorderValues() {
+    public void testThatRangeContainsBorderValues() {
         assertTrue(range.contains(5));
         assertTrue(range.contains(15));
     }
 
     @Test
-    void testThatAsListReturnsCorrectList() {
+    public void testThatAsListReturnsCorrectList() {
         List<Long> longs = range.asList();
 
         assertThat(longs.size(), is(11));
@@ -120,7 +119,7 @@ public class RangeTest {
     }
 
     @Test
-    void testThatIteratorWorksCorrect() {
+    public void testThatIteratorWorksCorrect() {
         Iterator<Long> longIterator = range.asIterator();
         for (int i = 5; i <= 15; i++) {
             assertThat(longIterator.next(), is((long) i));
